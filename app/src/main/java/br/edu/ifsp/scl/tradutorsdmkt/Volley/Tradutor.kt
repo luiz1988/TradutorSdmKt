@@ -1,5 +1,6 @@
 package br.edu.ifsp.scl.tradutorsdmkt.Volley
 
+import android.util.Log
 import br.edu.ifsp.scl.tradutorsdmkt.MainActivity
 import br.edu.ifsp.scl.tradutorsdmkt.MainActivity.codigosMensagen.RESPOSTA_TRADUCAO
 import br.edu.ifsp.scl.tradutorsdmkt.Model.Constantes.APP_ID_FIELD
@@ -10,6 +11,7 @@ import br.edu.ifsp.scl.tradutorsdmkt.Model.Constantes.END_POINT
 import br.edu.ifsp.scl.tradutorsdmkt.Model.Constantes.URL_BASE
 import br.edu.ifsp.scl.tradutorsdmkt.Model.Resposta
 import br.edu.ifsp.scl.tradutorsdmkt.Model.Translation
+import br.edu.ifsp.scl.tradutorsdmkt.R
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -23,6 +25,12 @@ import org.jetbrains.anko.design.snackbar
 import org.json.JSONException
 import org.json.JSONObject
 import java.lang.reflect.Type
+import kotlin.reflect.KClass
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.functions
+
+//import br.edu.ifsp.scl.tradutorsdmkt.retrofit.Tradutor
+
 
 class Tradutor(val mainActivity: MainActivity) {
 // As funções abaixo devem ser adicionadas aqui
@@ -66,37 +74,67 @@ fun traduzir(palavraOrigem: String, idiomaOrigem: String, idiomaDestino: String)
 
 /* Trata a resposta de uma requisição quando o acesso ao WS foi realizado. Complexidade de O(N^5).
 Pode causar problemas de desempenho com respostas muito grandes */
-/*inner class RespostaListener : Response.Listener<JSONObject> {
-    override fun onResponse(response: JSONObject?) {
-        try {
-            // Cria um objeto Gson que consegue fazer reflexão de um Json para Data Class
-            val gson: Gson = Gson()
-            // Reflete a resposta (que é um Json) num objeto da classe Resposta
-            val resposta: Resposta = gson.fromJson(response.toString(), Resposta::class.java)
-            // StringBuffer para armazenar o resultado das traduções
-            var traduzidoSb = StringBuffer()
-            // Parseando o objeto e adicionando as traduções ao StringBuffer, O(N^5)
-            resposta.results?.forEach {
-                it?.lexicalEntries?.forEach {
-                    it?.entries?.forEach {
-                        it?.senses?.forEach {
-                            it?.translations?.forEach {
-                                traduzidoSb.append("${it?.text}, ")
-                            }
-                        }
-                    }
-                }
-            }
-            // Enviando as tradução ao Handler da thread de UI para serem mostrados na tela
-            mainActivity.tradutoHandler.obtainMessage(
-                RESPOSTA_TRADUCAO,
-                traduzidoSb.toString().substringBeforeLast(',')
-            ).sendToTarget()
-        } catch (jse: JSONException) {
-            mainActivity.mainLl.snackbar("Erro na conversão JSON")
-        }
-    }
-}*/
+//inner class RespostaListener : Response.Listener<JSONObject> {
+//    override fun onResponse(response: JSONObject?) {
+//        try {
+//            // Cria um objeto Gson que consegue fazer reflexão de um Json para Data Class
+//            val gson: Gson = Gson()
+//            // Reflete a resposta (que é um Json) num objeto da classe Resposta
+//            val resposta: Resposta = gson.fromJson(response.toString(), Resposta::class.java)
+//            // StringBuffer para armazenar o resultado das traduções
+//            var traduzidoSb = StringBuffer()
+//            // Parseando o objeto e adicionando as traduções ao StringBuffer, O(N^5)
+//            resposta.results?.forEach {
+//                it?.lexicalEntries?.forEach {
+//                    it?.entries?.forEach {
+//                        it?.senses?.forEach {
+//                            it?.translations?.forEach {
+//                                traduzidoSb.append("${it?.text}, ")
+//
+//                                val clTransJ : Class<Translation> = Translation::class.java
+//                                val clTransK : KClass<Translation> = clTransJ.kotlin
+//
+//                                clTransJ.declaredFields.forEach {
+//                                    Log.v(
+//                                        mainActivity.getString(R.string.app_name),
+//                                        "Nome e tipo do atributo Java: ${it.name}, ${it.type}"
+//                                    )
+//                                }
+//                                clTransK.declaredMemberProperties.forEach {
+//                                    Log.v(
+//                                        mainActivity.getString(R.string.app_name),
+//                                        "Nome e tipo da propriedade Kotlin: ${it.name}, ${it.returnType}"
+//                                    )
+//                                }
+//// Métodos e funções
+//                                clTransJ.declaredMethods.forEach {
+//                                    Log.v(
+//                                        mainActivity.getString(R.string.app_name),
+//                                        "Nome e tipo do método Java: ${it.name}, ${it.returnType}"
+//                                    )
+//                                }
+//                                clTransK.functions.forEach {
+//                                    Log.v(
+//                                        mainActivity.getString(R.string.app_name),
+//                                        "Nome e tipo da função Kotlin: ${it.name}, ${it.returnType}"
+//                                    )
+//                                }
+//
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            // Enviando as tradução ao Handler da thread de UI para serem mostrados na tela
+//            mainActivity.tradutoHandler.obtainMessage(
+//                RESPOSTA_TRADUCAO,
+//                traduzidoSb.toString().substringBeforeLast(',')
+//            ).sendToTarget()
+//        } catch (jse: JSONException) {
+//            mainActivity.mainLl.snackbar("Erro na conversão JSON")
+//        }
+//    }
+//}
 
 // Trata erros na requisição ao WS
 inner class ErroListener : Response.ErrorListener {
