@@ -29,9 +29,6 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.functions
 
-//import br.edu.ifsp.scl.tradutorsdmkt.retrofit.Tradutor
-
-
 class Tradutor(val mainActivity: MainActivity) {
 // As funções abaixo devem ser adicionadas aqui
 
@@ -73,7 +70,7 @@ fun traduzir(palavraOrigem: String, idiomaOrigem: String, idiomaDestino: String)
 
 
 /* Trata a resposta de uma requisição quando o acesso ao WS foi realizado. Complexidade de O(N^5).
-Pode causar problemas de desempenho com respostas muito grandes */
+//Pode causar problemas de desempenho com respostas muito grandes */
 //inner class RespostaListener : Response.Listener<JSONObject> {
 //    override fun onResponse(response: JSONObject?) {
 //        try {
